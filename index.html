@@ -5,15 +5,734 @@
 	<style type="text/css">
 		canvas{
 			/*background-color: rgba(255,0,0,.5);*/
-			/*border: 2px dotted blue;*/
+			border: 2px dashed blue;
+			/*width: 100vw;
+			height: 100vh;*/
+			display: block;
+			margin-bottom: 20px;
+		}
+
+		.d-flex{
+			display: flex;
+		}
+		.d-flex canvas{
+			margin-right: 20px;
+		}
+		.flex-wrap{
+			flex-wrap: wrap;
 		}
 	</style>
 </head>
 <body>
-	<canvas id="canvas1"></canvas>
+	<img src="assets/img/resize-workspace.jpg" id="image" style="display: none;">
+	<video id="video" autoplay controls muted style="display:none">
+		<source src="assets/video/how-to-get-gold-from-old-computer-experiment.mp4" type="video/mp4">
+	</video>
+	
+	<canvas id="canvas24" width="700" height="400"></canvas>
+
+	<div class="d-flex flex-wrap">
+		<canvas id="canvas23_0" width="120" height="120"></canvas>		
+		<canvas id="canvas23_1" width="120" height="120"></canvas>		
+		<canvas id="canvas23_2" width="120" height="120"></canvas>		
+		<canvas id="canvas23_3" width="120" height="120"></canvas>		
+		<canvas id="canvas23_4" width="120" height="120"></canvas>		
+		<canvas id="canvas23_5" width="120" height="120"></canvas>		
+	</div>
+	
+	<div class="d-flex flex-wrap">
+		<canvas id="canvas23_6" width="120" height="120"></canvas>		
+		<canvas id="canvas23_7" width="120" height="120"></canvas>		
+		<canvas id="canvas23_8" width="120" height="120"></canvas>		
+		<canvas id="canvas23_9" width="120" height="120"></canvas>		
+		<canvas id="canvas23_10" width="120" height="120"></canvas>		
+		<canvas id="canvas23_11" width="120" height="120"></canvas>	
+	</div>
+
+	<canvas id="canvas22" width="700" height="200"></canvas>
+	<canvas id="canvas21" width="700" height="400"></canvas>
+	<canvas id="canvas20" width="700" height="400"></canvas>
+	<canvas id="canvas19" width="700" height="400"></canvas>
+	<canvas id="canvas18" width="700" height="400"></canvas>
+	<canvas id="canvas17" width="700" height="400"></canvas>
+	<canvas id="canvas16" width="700" height="400"></canvas>
+	<canvas id="canvas15" width="700" height="400"></canvas>
+	<canvas id="canvas14" width="700" height="300"></canvas>
+	<canvas id="canvas13" width="500" height="400"></canvas>
+	<canvas id="canvas12" width="25" height="25"></canvas>
+	<canvas id="canvas11" width="700" height="600"></canvas>
+	<canvas id="canvas10" width="500" height="400"></canvas>
+	<canvas id="canvas9" width="500" height="300"></canvas>
+	<canvas id="canvas8" width="500" height="300"></canvas>
+	<canvas id="canvas7" width="500" height="300"></canvas>
+	<canvas id="canvas6" width="500" height="200"></canvas>
+	<canvas id="canvas5" width="500" height="200"></canvas>
+	<canvas id="canvas4" width="500" height="200"></canvas>
+	<canvas id="canvas3" width="500" height="200"></canvas>
+	<canvas id="canvas2" width="500" height="200"></canvas>
+	<canvas id="canvas1" width="500" height="200"></canvas>
 
 	<script>
 		window.addEventListener('load',function () {
+
+
+
+			let theCanvas24 = document.getElementById('canvas24');
+
+			if(theCanvas24 && theCanvas24.getContext){
+
+				let ctx = theCanvas24.getContext('2d');
+
+				if(ctx) {
+					let srcImg = document.getElementById('image');
+					ctx.drawImage(srcImg,0,0,ctx.canvas.width,ctx.canvas.height);
+
+					let current_row = 0, max_row = ctx.canvas.height - 1;
+
+					let img_data = ctx.getImageData(0,0,ctx.canvas.width, ctx.canvas.height);
+					let pixels = img_data.data;
+
+					while (current_row < max_row) {
+						let this_row_bytes = current_row * ctx.canvas.width *4;
+
+						for (var i = 0; i < ctx.canvas.width * 4; i += 4) {
+							pixels[this_row_bytes + i] = 255 - pixels[this_row_bytes + i];
+							pixels[this_row_bytes + i + 1] = 255 - pixels[this_row_bytes + i + 1];
+							pixels[this_row_bytes + i +2] = 255 - pixels[this_row_bytes + i +2];
+						}
+						current_row++;
+					}
+					ctx.putImageData(img_data,0,0, 100, 100, ctx.canvas.width - 200, ctx.canvas.height - 200);
+				}
+			}
+
+
+			let theCanvas23 = document.getElementById('canvas23_0');
+
+			if(theCanvas23 && theCanvas23.getContext){
+
+				let ctx = theCanvas23.getContext('2d');
+
+				if(ctx) {
+					let comp_methods = [
+					'source-over', 'source-in', 'source-out','source-atop', 'lighter', 'xor',
+					'destination-over', 'destination-in', 'destination-out', 'destination-atop', 'darken', 'copy'
+					];
+
+					let rects = [
+						{ x: 20, y: 20, width: 60, height: 60 },
+						{ x: 40, y: 40, width: 60, height: 60 },
+					];
+
+					for (var i = comp_methods.length - 1; i >= 0; i--) {
+						let method_name = comp_methods[i];
+
+						let cnvs_name = 'canvas23_'+i;
+						let comp_canvas = document.getElementById(cnvs_name);
+						let comp_ctx = comp_canvas.getContext('2d');
+
+						comp_ctx.fillStyle = 'blue';
+						comp_ctx.fillRect(rects[0].x, rects[0].y, rects[0].width, rects[0].height);
+
+						comp_ctx.globalCompositeOperation = method_name;
+
+						comp_ctx.fillStyle = 'green';
+						comp_ctx.fillRect(rects[1].x, rects[1].y, rects[1].width, rects[1].height);
+
+					}
+
+				}
+			}
+
+			let theCanvas22 = document.getElementById('canvas22');
+
+			if(theCanvas22 && theCanvas22.getContext){
+
+				let ctx = theCanvas22.getContext('2d');
+
+				if(ctx) {
+					ctx.globalAlpha = 1.0;
+
+					let rects = [
+						{ x: 20, y: 20, width: 75, height: 75 },
+						{ x: 40, y: 50, width: 75, height: 75 },
+						{ x: 150, y: 20, width: 75, height: 75 },
+						{ x: 170, y: 50, width: 75, height: 75 },
+						{ x: 280, y: 20, width: 75, height: 75 },
+						{ x: 300, y: 50, width: 75, height: 75 },
+						{ x: 410, y: 20, width: 75, height: 75 },
+						{ x: 430, y: 50, width: 75, height: 75 },
+					];
+
+					for (let i = 0; i < rects.length; i += 2) {
+						rect = rects[i];
+						next_rect = rects[i+1];
+
+						ctx.fillStyle = "blue";
+						ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+
+						ctx.fillStyle = "red";
+						ctx.fillRect(next_rect.x, next_rect.y, next_rect.width, next_rect.height);
+
+
+						ctx.globalAlpha -= .3;
+					}
+				}
+			}
+
+			let theCanvas21 = document.getElementById('canvas21');
+
+			if(theCanvas21 && theCanvas21.getContext){
+
+				let ctx = theCanvas21.getContext('2d');
+
+				if(ctx) {
+					ctx.fillStyle = 'blue';
+
+					ctx.fillRect(0,0,100,50);
+
+					let tx = ctx.canvas.width / 2;
+					let ty = ctx.canvas.height / 2;
+					ctx.fillStyle = "red";
+					ctx.save();
+					ctx.transform(1,0,0,1,tx,ty);
+					ctx.fillRect(0,0,100,50);
+					ctx.restore();
+
+
+
+					let sx = 0.3;
+					let sy = 0;
+					ctx.fillStyle = "green";
+					ctx.setTransform(1,sy,sx,1,0,0);
+					ctx.fillRect(200,20,100,50);
+				}
+			}
+
+			let theCanvas20 = document.getElementById('canvas20');
+
+			if(theCanvas20 && theCanvas20.getContext){
+
+				let ctx = theCanvas20.getContext('2d');
+
+				if(ctx) {
+					ctx.fillStyle = 'blue';
+
+					ctx.fillRect(100,50,100,50);
+
+					ctx.save();
+
+					ctx.rotate(0.5);
+					ctx.fillRect(150,50,100,50);
+
+					ctx.restore();
+
+
+					ctx.translate(ctx.canvas.width/2, ctx.canvas.height/2);
+					let radian = (Math.PI / 100) * 10;
+
+					for(let degrees = 0; degrees < 360; degrees += 10) {
+						ctx.rotate(radian);
+						ctx.beginPath();
+						ctx.moveTo(-100,0);
+						ctx.lineTo(100,0);
+						ctx.stroke();
+					}
+
+				}
+			}
+
+			let theCanvas19 = document.getElementById('canvas19');
+
+			if(theCanvas19 && theCanvas19.getContext){
+
+				let ctx = theCanvas19.getContext('2d');
+
+				if(ctx) {
+					ctx.fillStyle = 'blue';
+
+					ctx.fillRect(0,0,100,100);
+
+					ctx.save();
+					ctx.scale(2,2)
+					ctx.fillRect(100,75,100,100);
+					ctx.restore();
+
+					ctx.scale(.5,.5);
+					ctx.fillRect(250,0,100,100);
+				}
+			}
+
+			let theCanvas18 = document.getElementById('canvas18');
+
+			if(theCanvas18 && theCanvas18.getContext){
+
+				let ctx = theCanvas18.getContext('2d');
+
+				if(ctx) {
+					ctx.fillStyle = 'blue';
+
+					ctx.fillRect(0,0,100,100);
+
+					ctx.translate(ctx.canvas.width / 2,ctx.canvas.height / 2);
+
+					ctx.fillRect(0,0,100,100);
+				}
+			}
+
+			let theCanvas17 = document.getElementById('canvas17');
+
+			if(theCanvas17 && theCanvas17.getContext){
+
+				let ctx = theCanvas17.getContext('2d');
+
+				if(ctx) {
+					let srcImg = document.getElementById('image');
+
+					// ctx.arc(ctx.canvas.width / 2, ctx.canvas.height / 2, 100, 0, 2 * Math.PI);
+					// ctx.clip();
+
+					ctx.beginPath();
+					ctx.moveTo(105, 200);
+					ctx.lineTo(250, 25);
+					ctx.lineTo(525, 50);
+					ctx.lineTo(475, 285);
+					ctx.closePath();
+					ctx.clip();
+
+					ctx.drawImage(srcImg,0,0,ctx.canvas.width,ctx.canvas.height);
+
+					// ctx.drawImage(IMG/SRC, SourceX, SourceY, SourceWIDTH, SourceHEIGHT, X, Y, WIDTH, HEIGHT);
+
+				}
+			}
+
+			let theCanvas16 = document.getElementById('canvas16');
+
+			if(theCanvas16 && theCanvas16.getContext){
+
+				let ctx = theCanvas16.getContext('2d');
+
+				if(ctx) {
+
+					function drawVidFrame(){
+						let srcVid = document.getElementById('video');
+
+						ctx.drawImage(srcVid, 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+						requestAnimationFrame(drawVidFrame);
+					}
+					requestAnimationFrame(drawVidFrame);
+					document.getElementById('video').play();
+					// ctx.drawImage(IMG/SRC, SourceX, SourceY, SourceWIDTH, SourceHEIGHT, X, Y, WIDTH, HEIGHT);
+
+				}
+			}
+
+			let theCanvas15 = document.getElementById('canvas15');
+
+			if(theCanvas15 && theCanvas15.getContext){
+
+				let ctx = theCanvas15.getContext('2d');
+
+				if(ctx) {
+					let srcImg = document.getElementById('image');
+
+					ctx.drawImage(srcImg,25,50);
+
+					ctx.drawImage(srcImg,275,50, 100, 100);
+
+					ctx.drawImage(srcImg,50,50,200,200,425,50, 200,200);
+					ctx.drawImage(srcImg,0,0,100,100,275,275, 100,100);
+					// ctx.drawImage(IMG/SRC, SourceX, SourceY, SourceWIDTH, SourceHEIGHT, X, Y, WIDTH, HEIGHT);
+
+				}
+			}
+
+
+			let theCanvas14 = document.getElementById('canvas14');
+
+			if(theCanvas14 && theCanvas14.getContext){
+
+				let ctx = theCanvas14.getContext('2d');
+
+				if(ctx) {
+					let linGrd = ctx.createLinearGradient(20,20,20,200);
+
+					linGrd.addColorStop(0,'#f00');
+					linGrd.addColorStop(0.5,'#0f0');
+					linGrd.addColorStop(1,'#00f');
+
+					ctx.fillStyle = linGrd;
+					ctx.fillRect(20,20,200,200)
+					ctx.lineWidth = 3;
+					ctx.strokeRect(20,20,200,200)
+
+
+					let radGrd = ctx.createRadialGradient(
+						525,150,20,525,150,100
+					);
+
+					radGrd.addColorStop(0,'#f00');
+					radGrd.addColorStop(0.5,'#0f0');
+					radGrd.addColorStop(1,'#00f');
+
+					ctx.fillStyle = radGrd;
+					ctx.beginPath();
+					ctx.arc(525, 150, 100, 0, 2*Math.PI);
+					ctx.stroke();
+					ctx.fill();
+
+				}
+			}
+
+			let theCanvas13 = document.getElementById('canvas13');
+
+			if(theCanvas13 && theCanvas13.getContext){
+
+				let ctx = theCanvas13.getContext('2d');
+
+				if(ctx) {
+					let patCanvas = document.getElementById('canvas12');
+					let patCtx = patCanvas.getContext('2d');
+
+
+					patCtx.strokeStyle = 'red';
+					patCtx.lineWidth = 1;
+					patCtx.beginPath();
+					patCtx.moveTo(0,0);
+					patCtx.lineTo(25,25);
+					patCtx.stroke();
+
+					let strokePat = ctx.createPattern(patCanvas, 'repeat');
+					ctx.strokeStyle = strokePat;
+					ctx.lineWidth = 25;
+					ctx.strokeRect(50,50,200,200)
+
+				}
+			}
+
+			let theCanvas11 = document.getElementById('canvas11');
+
+			if(theCanvas11 && theCanvas11.getContext){
+
+				let ctx = theCanvas11.getContext('2d');
+
+				if(ctx) {
+					setTimeout(function(){
+						let vid  = document.getElementById('video')
+						let vidPat = ctx.createPattern(vid, 'repeat');
+
+						ctx.fillStyle = vidPat;
+						ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height)
+					},5000)
+				}
+			}
+
+			let theCanvas10 = document.getElementById('canvas10');
+
+			if(theCanvas10 && theCanvas10.getContext){
+
+				let ctx = theCanvas10.getContext('2d');
+
+				if(ctx) {
+					let patImg = new Image();
+					patImg.onload = function() {
+						ctx.fillStyle = ctx.createPattern(patImg, 'repeat');
+						ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height)
+					}
+					patImg.src = 'assets/img/resize-workspace.jpg';
+				}
+
+			}
+
+
+			let theCanvas9 = document.getElementById('canvas9');
+
+			if(theCanvas9 && theCanvas9.getContext){
+
+				let ctx = theCanvas9.getContext('2d');
+
+				if(ctx) {
+					ctx.shadowColor = 'rgba(0,0,0,.5)';
+					ctx.shadowOffsetX = 10;
+					ctx.shadowOffsetY = 10;
+					ctx.shadowBlur = 10;
+
+					ctx.fillStyle = 'rgba(0,0,255,1)';
+					ctx.fillRect(20,20,100,100);
+
+
+					let theString = 'Hey, I am using canvas to write text';
+
+					ctx.fillStyle = 'rgba(255,0,0,1)';
+					ctx.shadowColor = 'rgba(0,100,100,1)';
+					ctx.shadowOffsetX = 5;
+					ctx.shadowOffsetY = 5;
+					ctx.shadowBlur = 5;
+					ctx.font = "25px serif";
+					ctx.fillText(theString, 20, 175);
+
+
+					ctx.lineCap = 'round';
+					ctx.lineWidth = 25;
+					ctx.shadowColor = 'rgba(150,0,150,.5)';
+					ctx.shadowBlur = 15;
+					ctx.strokeStyle = 'red';
+					ctx.beginPath();
+					ctx.moveTo(50,250);
+					ctx.lineTo(450,250);
+					ctx.stroke();
+				}
+
+			}
+
+			let theCanvas8 = document.getElementById('canvas8');
+
+			if(theCanvas8 && theCanvas8.getContext){
+
+				let ctx = theCanvas8.getContext('2d');
+
+				if(ctx) {
+					let theString = 'Hey, I am using canvas to write text';
+					let startX = 20;
+
+					ctx.font = '25px Georgia';
+					ctx.fillText(theString, startX, 60)
+
+					ctx.fillStyle = 'blue';
+					ctx.fillText(theString, startX, 100)
+
+
+					ctx.font = '32px Verdana';
+					ctx.fillStyle = 'yellow';
+					ctx.strokeStyle = 'rgba(-,255,0,0.8)';
+					ctx.fillText(theString, startX, 160);
+					ctx.strokeText(theString, startX, 165);
+
+
+					let textMeasure = ctx.measureText(theString);
+					ctx.beginPath();
+					ctx.strokeStyle = 'black';
+					ctx.moveTo(startX,170);
+					ctx.lineTo(startX+Math.round(textMeasure.width),170);
+					ctx.stroke();
+				}
+
+			}
+
+			let theCanvas7 = document.getElementById('canvas7');
+
+			if(theCanvas7 && theCanvas7.getContext){
+
+				let ctx = theCanvas7.getContext('2d');
+
+				if(ctx) {
+					ctx.lineWidth = 5;
+					ctx.strokeStyle = 'lightBlue';
+					ctx.fillStyle = 'lightyellow';
+
+					// curve
+					ctx.beginPath();
+					ctx.moveTo(50,200);
+					ctx.bezierCurveTo(50, 100, 200, 100, 200, 150);
+					ctx.stroke();
+
+					// curve control
+					ctx.lineWidth = 1;
+					ctx.strokeStyle = 'rgba(255,0,0,.25)';
+					ctx.beginPath();
+					ctx.moveTo(50,200);
+					ctx.lineTo(50, 100);
+					ctx.lineTo(200, 100);
+					ctx.lineTo(200, 150);
+					ctx.stroke();
+
+					// curve
+					ctx.lineWidth = 5;
+					ctx.strokeStyle = 'lightBlue';
+					ctx.fillStyle = 'lightyellow';
+					ctx.beginPath();
+					ctx.moveTo(250,200);
+					ctx.quadraticCurveTo(250, 100, 400, 150);
+					ctx.stroke();
+
+
+
+					// curve control
+					ctx.lineWidth = 1;
+					ctx.strokeStyle = 'rgba(255,0,0,.25)';
+					ctx.beginPath();
+					ctx.moveTo(250,200);
+					ctx.lineTo(250, 100);
+					ctx.lineTo(400, 150);
+					ctx.stroke();
+
+				}
+
+			}
+
+			let theCanvas6 = document.getElementById('canvas6');
+
+			if(theCanvas6 && theCanvas6.getContext){
+
+				let ctx = theCanvas6.getContext('2d');
+
+				if(ctx) {
+					ctx.lineWidth = 5;
+					ctx.strokeStyle = 'lightBlue';
+					ctx.fillStyle = 'lightyellow';
+
+					ctx.beginPath();
+					ctx.arc(75, 100, 50,0,.5*Math.PI);
+					ctx.stroke();
+
+					ctx.beginPath();
+					ctx.arc(225, 100, 50,0,.5*Math.PI,1);
+					ctx.stroke();
+
+					ctx.setLineDash([2]);
+					ctx.beginPath();
+					ctx.arc(375, 100, 50,0,2*Math.PI);
+					ctx.fill();
+					ctx.stroke();
+				}
+
+			}
+
+			let theCanvas5 = document.getElementById('canvas5');
+
+			if(theCanvas5 && theCanvas5.getContext){
+
+				let ctx = theCanvas5.getContext('2d');
+
+				if(ctx) {
+					ctx.lineWidth = 15;
+					ctx.strokeStyle = 'lightgreen';
+
+					ctx.setLineDash([5,10]);
+					ctx.beginPath();
+					ctx.moveTo(50, 50);
+					ctx.lineTo(450, 50);
+					ctx.stroke();
+
+					ctx.setLineDash([15,5]);
+					ctx.beginPath();
+					ctx.moveTo(50, 100);
+					ctx.lineTo(450, 100);
+					ctx.stroke();
+					
+					ctx.setLineDash([]);
+					ctx.beginPath();
+					ctx.moveTo(50, 150);
+					ctx.lineTo(450, 150);
+					ctx.stroke();
+				}
+
+			}
+
+			let theCanvas4 = document.getElementById('canvas4');
+
+			if(theCanvas4 && theCanvas4.getContext){
+
+				let ctx = theCanvas4.getContext('2d');
+
+				if(ctx) {
+					ctx.lineWidth = 15;
+					ctx.strokeStyle = 'orange';
+
+					ctx.lineJoin = "miter";
+					ctx.beginPath();
+					ctx.moveTo(25, 150);
+					ctx.lineTo(75, 50);
+					ctx.lineTo(125, 50);
+					ctx.lineTo(150, 70);
+					ctx.closePath();
+					ctx.stroke();
+
+					ctx.lineJoin = "round";
+					ctx.beginPath();
+					ctx.moveTo(175, 150);
+					ctx.lineTo(225, 50);
+					ctx.lineTo(275, 50);
+					ctx.lineTo(300, 70);
+					ctx.stroke();
+
+					ctx.lineJoin = "bevel";
+					ctx.beginPath();
+					ctx.moveTo(325, 150);
+					ctx.lineTo(375, 50);
+					ctx.lineTo(425, 50);
+					ctx.lineTo(450, 70);
+					ctx.stroke();
+				}
+
+			}
+
+			let theCanvas3 = document.getElementById('canvas3');
+
+			if(theCanvas3 && theCanvas3.getContext){
+
+				let ctx = theCanvas3.getContext('2d');
+
+				if(ctx) {
+					ctx.strokeStyle = 'green';
+					ctx.lineWidth = 1;
+
+					ctx.beginPath();
+
+					ctx.moveTo(50, 20);
+					ctx.lineTo(50, 180);
+
+					ctx.moveTo(450, 20);
+					ctx.lineTo(450, 180);
+
+					ctx.stroke();
+
+					ctx.lineWidth = 25;
+					ctx.strokeStyle = 'red';
+
+					ctx.lineCap = 'butt';
+					ctx.beginPath();
+					ctx.moveTo(50,50);
+					ctx.lineTo(450,50);
+					ctx.stroke();
+
+					ctx.lineCap = 'round';
+					ctx.beginPath();
+					ctx.moveTo(50,100);
+					ctx.lineTo(450,100);
+					ctx.stroke();
+
+					ctx.lineCap = 'square';
+					ctx.beginPath();
+					ctx.moveTo(50,150);
+					ctx.lineTo(450,150);
+					ctx.stroke();
+				}
+
+			}
+			let theCanvas2 = document.getElementById('canvas2');
+
+			if(theCanvas2 && theCanvas2.getContext){
+
+				let ctx = theCanvas2.getContext('2d');
+
+				if(ctx) {
+
+					for (var i = 0; i <= 10; i++) {
+						ctx.beginPath();
+
+						ctx.lineWidth = i+1;
+						ctx.moveTo(25,25+i*15);
+						ctx.lineTo(475,25+i*15);
+
+						ctx.stroke();
+					}
+				}
+
+			}
+
 			let theCanvas = document.getElementById('canvas1');
 
 			if(theCanvas && theCanvas.getContext){
@@ -33,9 +752,11 @@
 					ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
 					ctx.clearRect(40,25, 45, 20);
+
 				}
 
 			}
+
 		})
 	</script>
 </body>

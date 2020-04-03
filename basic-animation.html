@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slide Show</title>
+	<style>
+		canvas{
+			border: 2px dashed red;
+		}
+	</style>
+	<script type="text/javascript">
+		let rectY = 200, rectW = 40;
+		let rectX = - rectW;
+		let canvas = null;
+		let ctx = null;
+
+		function init() {
+			canvas = document.getElementById('canvas');
+			ctx = canvas.getContext('2d');
+
+			blank();
+
+			ctx.fillStyle = "yellow";
+			ctx.fillRect(rectX, rectY, rectW, rectW);
+
+			requestAnimationFrame(anim);
+		}
+
+		function blank(){
+			ctx.fillStyle = "#00ddee";
+			ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		}
+
+		function anim(timestamp) {
+			if(rectX < ctx.canvas.width){
+				blank();
+				rectX += 2;
+
+				ctx.fillStyle = "yellow";
+				ctx.strokeStyle = "red";
+				ctx.lineWidth = 3;
+				ctx.fillRect(rectX, rectY, rectW, rectW);
+				ctx.strokeRect(rectX, rectY, rectW, rectW);
+			} else {
+				rectX = - rectW;
+			}
+
+			requestAnimationFrame(anim);
+		}
+
+		window.addEventListener('load', init)
+
+	</script>
+</head>
+
+<body>
+	<canvas id="canvas" width="700" height="400"></canvas>
+</body>
+</html>

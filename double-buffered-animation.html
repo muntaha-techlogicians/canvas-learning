@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slide Show</title>
+	<style>
+		body{
+			margin: 0;
+		}
+		canvas{
+			/*border: 2px dashed red;*/
+		}
+	</style>
+	<script type="text/javascript">
+		
+		let canvas = null;
+		let ctx = null;
+		let buffer_canvas = null;
+		let buffer_canvas_ctx = null;
+		let flake_array = [];
+		let flake_timer = null;
+		let max_flakes = 700;
+
+		function Flake() {
+			this.x = Math.round(Math.random() * ctx.canvas.width);
+			this.y = -10;
+			this.drift = Math.random();
+			this.speed = Math.round(Math.random() * 3) + 1;
+			this.width = (Math.random() * 3) + 2;
+			this.height = this.width;
+		}
+
+		function init() {
+			canvas = document.getElementById('canvas');
+			ctx = canvas.getContext('2d');
+			ctx.canvas.width = window.innerWidth;
+			ctx.canvas.height = window.innerHeight;
+
+			buffer_canvas = document.createElement('canvas');
+			buffer_canvas_ctx = buffer_canvas.getContext('2d');
+			buffer_canvas_ctx.canvas.width = ctx.canvas.width;
+			buffer_canvas_ctx.canvas.height = ctx.canvas.height;
+
+
+			buffer_canvas_ctx.beginPath();
+			buffer_canvas_ctx.fillStyle = "black";
+			buffer_canvas_ctx.fillRect(0,0,buffer_canvas.width, buffer_canvas.height);
+
+			buffer_canvas_ctx.arc(buffer_canvas.width/2, buffer_canvas.height/2, buffer_canvas.height/3, 0, 2 * Math.PI);
+
+			buffer_canvas_ctx.clip();
+
+			flake_timer = setInterval(addFlake, 200);
+
+			draw();
+
+			requestAnimationFrame(animate);
+		}
+
+		function addFlake() {
+			flake_array[flake_array.length] = new Flake();
+
+			if(flake_array.length == max_flakes){
+				clearInterval(flake_timer)
+			}
+		}
+
+
+		function blank(){
+			buffer_canvas_ctx.fillStyle = "#330033";
+			buffer_canvas_ctx.fillRect(0, 0, buffer_canvas_ctx.canvas.width, buffer_canvas_ctx.canvas.height);
+		}
+
+		function animate() {
+			blank();
+			update();
+			draw();
+			requestAnimationFrame(animate);
+		}
+
+
+
+		function update(){
+			for( let i = 0; i < flake_array.length; i++) {
+				// let flake = flake_array[i];
+				if(flake_array[i].y < ctx.canvas.height) {
+					flake_array[i].y += flake_array[i].speed;
+
+					if(flake_array[i].y > ctx.canvas.height){
+						flake_array[i].y = -5;
+					}
+
+					flake_array[i].x += flake_array[i].drift;
+
+					if(flake_array[i].x > ctx.canvas.width){
+						flake_array[i].x = 0
+					}
+				}
+			}
+		}
+
+
+		function draw(){
+			ctx.save();
+
+			for (let i = 0; i < flake_array.length; i++) {
+				// let flake = flake_array[i];
+				buffer_canvas_ctx.fillStyle = "#fff";
+				buffer_canvas_ctx.fillRect(flake_array[i].x, flake_array[i].y, flake_array[i].width,flake_array[i].height);
+			}
+
+			ctx.drawImage(buffer_canvas, 0, 0, buffer_canvas.width, buffer_canvas.height)
+
+			ctx.restore();
+		}
+		window.addEventListener('load', init)
+
+	</script>
+</head>
+
+<body>
+	<canvas id="canvas" width="700" height="400"></canvas>
+</body>
+</html>

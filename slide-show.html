@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slide Show</title>
+	<script type="text/javascript">
+		let image_paths = ['assets/img/resize-workspace.jpg','assets/img/bike.jpeg','assets/img/water.jpeg'];
+		let canvas = null;
+		let ctx = null;
+		let img = document.createElement('img');
+		let current_image = 0;
+		let IMAGE_DELAY = 3000
+
+		function init() {
+			canvas = document.getElementById('canvas');
+			ctx = canvas.getContext('2d');
+
+			img.setAttribute('width', '600');
+			img.setAttribute('height', '400');
+
+			switchImage();
+
+			setInterval(switchImage, IMAGE_DELAY);
+
+		}
+
+
+		function switchImage(){
+			img.setAttribute('src', image_paths[current_image++]);
+
+			if(current_image >= image_paths.length){
+				current_image = 0
+			}
+
+			ctx.drawImage(img, 0, 0, ctx.canvas.width, ctx.canvas.height)
+		}
+	</script>
+</head>
+
+<body onload="init()">
+	<canvas id="canvas" width="700" height="400"></canvas>
+</body>
+</html>
