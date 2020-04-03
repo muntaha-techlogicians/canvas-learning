@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Paint</title>
+	<style>
+		body{
+			/*margin: 0;*/
+		}
+		canvas{
+			border: 2px solid black;
+		}
+		kbd{
+			background: black;
+			color: #fff;
+			padding: 3px;
+			border-radius: 4px;
+		}
+	</style>
+	<script type="text/javascript">
+		
+		let canvas = null;
+		let ctx = null;
+		let pointerWeight = 10;
+		let pointerType = 'pen';
+
+		function init() {
+			canvas = document.getElementById('canvas');
+			ctx = canvas.getContext('2d');
+			ctx.fillStyle = 'black';
+
+			canvas.addEventListener('mousemove', function(e) {
+				// console.log(e.ctrlKey);
+				if(e.ctrlKey){
+					let x = e.x - canvas.offsetLeft;
+					let y = e.y - canvas.offsetTop;
+					if(pointerType == 'pen'){
+						ctx.fillRect(x, y, pointerWeight, pointerWeight);
+					} else if(pointerType == 'eraser') {
+						ctx.clearRect(x, y, pointerWeight, pointerWeight);
+					}
+				}
+			});
+		}
+
+		function changleFillStyle(input){
+			ctx.fillStyle = input.value;
+		}
+
+		function changePointerWeight(input){
+			pointerWeight = input.value;
+		}
+
+		function changePointerType(input){
+			pointerType = input.value;
+		}
+		
+		window.addEventListener('load', init);
+		
+	</script>
+</head>
+
+<body>
+	<h3>* For draw / erase - move mouse with <kbd>ctrl</kbd> over the canvas</h3>
+	<canvas id="canvas" width="700" height="400"></canvas>
+	<input type="color" onchange="changleFillStyle(this)">
+	<select onchange="changePointerWeight(this)">
+		<option>10</option>
+		<option>20</option>
+		<option>30</option>
+		<option>40</option>
+	</select>
+	<select onchange="changePointerType(this)">
+		<option>pen</option>
+		<option>eraser</option>
+	</select>
+</body>
+</html>
